@@ -35,6 +35,9 @@ max_seq_length = 8192
 # --- 1. Caricamento dataset ---
 dataset = load_ctf_data(step_folder)
 
+# Larger rank = smarter, but slower
+lora_rank = 32  
+
 # --- 2. Caricamento modello base ---
 # Unsloth ottimizza il modello per inferenza rapida e training efficiente.
 # load_in_4bit=False → precisione piena (bf16), nessuna quantizzazione
@@ -43,9 +46,9 @@ dataset = load_ctf_data(step_folder)
 model, tokenizer = FastLanguageModel.from_pretrained(
     model_name="unsloth/DeepSeek-R1-0528-Qwen3-8B",
     max_seq_length=max_seq_length,
-    load_in_4bit=False,
-    fast_inference=True,
-    gpu_memory_utilization=0.7,
+    load_in_4bit=False, # False for LoRA 16bit
+    fast_inference=True, # Enable vLLM fast inference
+    gpu_memory_utilization=0.7, # Reduce if out of memory
     device_map="auto"
 )
 # --- 3. Applicazione LoRA (PEFT) ---
@@ -58,13 +61,18 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 # use_gradient_checkpointing="unsloth" → risparmia VRAM ricalcolando le attivazioni
 model = FastLanguageModel.get_peft_model(
     model,
-    r = 32,
+    r = lora_rank, # Choose any number > 0 ! Suggested 8, 16, 32, 64, 128
     target_modules = [
-        "q_proj", "k_proj", "v_proj", "o_proj",
-        "gate_proj", "up_proj", "down_proj",
+        "q_proj",
+        "k_proj",
+        "v_proj",
+        "o_proj",
+        "gate_proj",
+        "up_proj",
+        "down_proj",
     ],
     lora_alpha = 64,
-    use_gradient_checkpointing = "unsloth",
+    use_gradient_checkpointing = "unsloth", # Enable long context finetuning
     random_state = 3407,
 )
 # --- 4. Filtraggio campioni per lunghezza ---
