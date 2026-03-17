@@ -47,7 +47,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
     model_name="deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
     max_seq_length=max_seq_length,
     load_in_4bit=False, # False for LoRA 16bit
-    fast_inference=True, # Enable vLLM fast inference
+    fast_inference=False, # Disabilita vLLM durante il training (risparmia VRAM)
     gpu_memory_utilization=0.7, # Reduce if out of memory
     device_map="auto"
 )
