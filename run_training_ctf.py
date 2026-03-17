@@ -22,8 +22,8 @@ from utils.trainer_config import create_training_config
 from utils.reward import accuracy_reward, format_reward
 from dataclasses import asdict
 
-# Cartella con i file JSON degli step di pentest (es. ./data/steps/session_001.json)
-step_folder = "./data/steps"
+# Cartella con i file JSON degli step di pentest (es. ./dataset/ctf/session_001.json)
+step_folder = "./dataset/ctf"
 
 # Dove salvare i checkpoint e il modello finale
 output_dir = "./model/grpo_stage1"
