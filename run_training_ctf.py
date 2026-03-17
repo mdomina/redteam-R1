@@ -30,7 +30,7 @@ output_dir = "./model/grpo_stage1"
 
 # Lunghezza massima della sequenza (prompt + risposta) in token.
 # Limita la memoria GPU e definisce il contesto massimo del modello.
-max_seq_length = 8192
+max_seq_length = 4096
 
 # --- 1. Caricamento dataset ---
 dataset = load_ctf_data(step_folder)
@@ -47,7 +47,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
     model_name="deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
     max_seq_length=max_seq_length,
     load_in_4bit=False, # False for LoRA 16bit
-    fast_inference=True, # Disabilita vLLM durante il training (risparmia VRAM)
+    fast_inference=False, # vLLM durante il training
     gpu_memory_utilization=0.7, # Reduce if out of memory
     device_map="auto"
 )
