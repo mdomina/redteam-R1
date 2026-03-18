@@ -1,7 +1,7 @@
 import re
 
 
-def accuracy_reward(prompts, completions, answer, **kwargs):
+def accuracy_ctf_reward(prompts, completions, answer, **kwargs):
     """
     Reward function per l'ACCURATEZZA del contenuto generato.
     Confronta la risposta del modello con il ground truth (answer).

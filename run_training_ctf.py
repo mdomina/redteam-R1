@@ -19,7 +19,7 @@ from unsloth import FastLanguageModel
 from trl import GRPOConfig, GRPOTrainer
 from utils.load_dataset import load_ctf_data
 from utils.trainer_config import create_training_config
-from utils.reward import accuracy_reward, format_reward
+from utils.reward import accuracy_ctf_reward, format_reward
 from dataclasses import asdict
 
 # Cartella con i file JSON degli step di pentest (es. ./dataset/ctf/session_001.json)
@@ -30,7 +30,7 @@ output_dir = "./model/grpo_stage1"
 
 # Lunghezza massima della sequenza (prompt + risposta) in token.
 # Limita la memoria GPU e definisce il contesto massimo del modello.
-max_seq_length = 4096
+max_seq_length = 8192
 
 # --- 1. Caricamento dataset ---
 dataset = load_ctf_data(step_folder)
@@ -120,7 +120,7 @@ swanlab.init(
 trainer = GRPOTrainer(
     model=model,
     processing_class=tokenizer,
-    reward_funcs=[format_reward, accuracy_reward],
+    reward_funcs=[format_reward, accuracy_ctf_reward],
     args=training_args,
     train_dataset=dataset,
 )
