@@ -48,7 +48,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
     max_seq_length=max_seq_length,
     load_in_4bit=False, # False for LoRA 16bit
     fast_inference=True, # vLLM durante il training
-    gpu_memory_utilization=0.5, # Reduce if out of memory
+    gpu_memory_utilization=0.7, # Reduce if out of memory
     device_map="auto"
 )
 # --- 3. Applicazione LoRA (PEFT) ---
@@ -99,7 +99,7 @@ del tokenized  # libera memoria
 # max_completion_length: spazio rimanente per la risposta del modello
 max_prompt_length = maximum_length + 1
 # Non lasciare che superi i 1024 o 2048 token di risposta
-max_completion_length = min(1024, max_seq_length - max_prompt_length)
+max_completion_length = min(2048, max_seq_length - max_prompt_length)
 
 training_args = create_training_config(max_prompt_length, max_completion_length, output_dir, tokenizer)
 
