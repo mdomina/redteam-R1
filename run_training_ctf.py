@@ -16,7 +16,7 @@ import os
 import swanlab
 import numpy as np
 from unsloth import FastLanguageModel
-from trl import GRPOConfig, GRPOTrainer
+from trl import GRPOTrainer
 from utils.load_dataset import load_ctf_data
 from utils.trainer_config import create_training_config
 from utils.reward import accuracy_ctf_reward, format_reward
@@ -98,7 +98,8 @@ del tokenized  # libera memoria
 # max_prompt_length: lunghezza massima dell'input (+1 per sicurezza)
 # max_completion_length: spazio rimanente per la risposta del modello
 max_prompt_length = maximum_length + 1
-max_completion_length = max_seq_length - max_prompt_length
+# Non lasciare che superi i 1024 o 2048 token di risposta
+max_completion_length = min(2048, max_seq_length - max_prompt_length)
 
 training_args = create_training_config(max_prompt_length, max_completion_length, output_dir, tokenizer)
 
