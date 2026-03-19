@@ -1,6 +1,6 @@
 swanlab
 unsloth
-vllm
+# vllm
 pillow
 trl
 deepspeed

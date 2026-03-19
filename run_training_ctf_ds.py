@@ -92,7 +92,7 @@ del tokenized
 
 # --- 5. Calcolo lunghezze prompt/completion ---
 max_prompt_length = maximum_length + 1
-max_completion_length = min(2048, max_seq_length - max_prompt_length)
+max_completion_length = max_seq_length - max_prompt_length
 
 # --- 6. Configurazione training con DeepSpeed ---
 training_args = GRPOConfig(
@@ -134,7 +134,7 @@ trainer = GRPOTrainer(
     train_dataset=dataset,
 )
 
-trainer.train(resume_from_checkpoint=True)
+trainer.train(resume_from_checkpoint=False)
 
 # --- 9. Salvataggio modello finale ---
 final_model_dir = os.path.join(output_dir, "final_model")
