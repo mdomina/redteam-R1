@@ -46,7 +46,7 @@ lora_rank = 32
 model, tokenizer = FastLanguageModel.from_pretrained(
     model_name="deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
     max_seq_length=max_seq_length,
-    load_in_4bit=False, # False for LoRA 16bit
+    load_in_4bit=True, # False for LoRA 16bit
     fast_inference=True, # vLLM durante il training
     gpu_memory_utilization=0.7, # Reduce if out of memory
     device_map="auto"
@@ -126,7 +126,7 @@ trainer = GRPOTrainer(
     train_dataset=dataset,
 )
 
-trainer.train()
+trainer.train(resume_from_checkpoint=True)
 
 # --- 8. Salvataggio modello finale ---
 final_model_dir = os.path.join(output_dir, "final_model")

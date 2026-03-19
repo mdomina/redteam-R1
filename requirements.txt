@@ -2,3 +2,5 @@ swanlab
 unsloth
 vllm
 pillow
+trl
+deepspeed

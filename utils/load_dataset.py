@@ -88,4 +88,8 @@ Command: [Write the full command you would run.]
                     }
                     all_samples.append(sample)
 
-    return Dataset.from_list(all_samples)
+    dataset = Dataset.from_list(all_samples)
+    dataset = dataset.map(lambda x: {"prompt_length": sum(len(m["content"]) for m in x["prompt"])})
+    dataset = dataset.sort("prompt_length")
+    dataset = dataset.remove_columns(["prompt_length"])
+    return dataset

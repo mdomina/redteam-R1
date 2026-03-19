@@ -21,20 +21,22 @@ def create_training_config(max_prompt_length, max_completion_length, output_dir,
       report_to="swanlab"        → logging su SwanLab (alternativa a W&B)
     """
     training_args = GRPOConfig(
+        deepspeed="deepspeed_zero2_offload.json", # se usi deepspeed
         temperature=0.6,
         learning_rate=5e-6,
         weight_decay=0.01,
         warmup_ratio=0.03,
         lr_scheduler_type="cosine",
-        optim="adamw_8bit",# adamw_8bit: quantizzato; adamw_torch: normale
+        optim="adamw_torch",# adamw_8bit: quantizzato; adamw_torch: normale se usi deepspeed
         bf16=True,
         logging_steps=1,
         per_device_train_batch_size=2,
         gradient_accumulation_steps=16,
-        num_generations=4,
+        gradient_checkpointing=True,
+        num_generations=8,
         max_prompt_length=max_prompt_length,
         max_completion_length=max_completion_length,
-        save_steps=50,
+        save_steps=10,
         save_total_limit=3,
         num_train_epochs=1,
         report_to="swanlab",
