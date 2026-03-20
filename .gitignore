@@ -29,9 +29,9 @@ wandb/
 *.pth
 
 # Dataset files (large/generated)
-# dataset/ctf_compressed_hf/
-# dataset/corsi/
-# dataset/ctf/
+dataset/ctf_compressed_hf/
+dataset/corsi/
+dataset/ctf/
 
 # Logs
 *.log

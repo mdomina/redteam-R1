@@ -48,7 +48,7 @@ def load_ctf_data_compressed(dataset_folder: str, output_dir: str = "dataset/ctf
 
     Richiede ANTHROPIC_API_KEY nell'ambiente.
     """
-    client = anthropic.Anthropic(api_key="REMOVED")
+    client = anthropic.Anthropic()  # legge ANTHROPIC_API_KEY dall'environment
     checkpoint_path = os.path.join(output_dir, "checkpoint.json")
     os.makedirs(output_dir, exist_ok=True)
 
