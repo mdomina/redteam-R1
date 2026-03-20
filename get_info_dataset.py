@@ -1,4 +1,4 @@
-from utils.load_dataset import load_ctf_data
+from utils.load_dataset import load_ctf_data_hf
 from unsloth import FastLanguageModel
 import numpy as np
 
@@ -9,7 +9,7 @@ _, tokenizer = FastLanguageModel.from_pretrained(
     load_in_4bit=True,
 )
 
-dataset = load_ctf_data("./dataset/ctf")
+dataset = load_ctf_data_hf("./dataset/ctf")
 lengths = [
     len(tokenizer.apply_chat_template(x["prompt"], add_generation_prompt=True, tokenize=True))
     for x in dataset

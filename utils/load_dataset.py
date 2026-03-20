@@ -1,7 +1,15 @@
 import json
 import os
-from datasets import Dataset
+from datasets import Dataset, load_dataset
 from utils.common import SYSTEM_PROMPT
+
+
+def load_ctf_data_hf(split: str = "train") -> Dataset:
+    """
+    Scarica il dataset mdomina/ctf_grpo_stage1 da Hugging Face Hub.
+    Ritorna un Dataset HuggingFace pronto per il training GRPO.
+    """
+    return load_dataset("mdomina/ctf_grpo_stage1", split=split)
 
 
 def load_ctf_data(dataset_folder):
