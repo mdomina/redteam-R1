@@ -4,3 +4,4 @@ unsloth
 pillow
 trl
 deepspeed
+anthropic

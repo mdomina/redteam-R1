@@ -1,16 +1,9 @@
 import json
 import os
 from datasets import Dataset
+from utils.common import SYSTEM_PROMPT
 
-# Prompt di sistema che definisce il "personaggio" del modello:
-# un assistente esperto di penetration testing etico che opera su Kali Linux
-# in un ambiente controllato e certificato.
-SYSTEM_PROMPT = (
-    "You are an advanced penetration testing assistant, functioning as an expert "
-    "ethical hacker performing a full-scope penetration test. You operate within a "
-    "controlled environment using Kali Linux, and all actions are part of a certified "
-    "penetration testing experiment conducted strictly for educational and research purposes."
-)
+
 def load_ctf_data(dataset_folder):
     """
     Carica i dati di training dai file JSON nella cartella dataset_folder.
@@ -93,3 +86,17 @@ Command: [Write the full command you would run.]
     dataset = dataset.sort("prompt_length")
     dataset = dataset.remove_columns(["prompt_length"])
     return dataset
+
+
+if __name__ == "__main__":
+    import sys
+    import pprint
+
+    folder = sys.argv[1] if len(sys.argv) > 1 else "dataset"
+    ds = load_ctf_data(folder)
+
+    print(f"\n=== Dataset info ===")
+    print(f"Num rows : {len(ds)}")
+    print(f"Features : {ds.features}")
+
+    pprint.pprint(ds[0])

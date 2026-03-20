@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model outputs & checkpoints
+outputs/
+checkpoints/
+runs/
+wandb/
+*.safetensors
+*.bin
+*.pt
+*.pth
+
+# Dataset files (large/generated)
+# dataset/ctf_compressed_hf/
+# dataset/corsi/
+# dataset/ctf/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Secrets / env
+.env
+*.env
