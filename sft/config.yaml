@@ -1,0 +1,98 @@
+# ================================================================
+# Venom-R1 — SFT Config
+# Modifica questo file per configurare il tuo training.
+# ================================================================
+
+
+# ----------------------------------------------------------------
+# MODELLO
+# ----------------------------------------------------------------
+model_name: "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+model_revision: "main"
+trust_remote_code: false
+attn_implementation: "flash_attention_2"   # flash_attention_2 | eager | sdpa
+torch_dtype: "bfloat16"                    # bfloat16 | float16 | float32 | auto
+
+
+# ----------------------------------------------------------------
+# DATASET
+# ----------------------------------------------------------------
+dataset:
+  name: "tuo-username/tuo-dataset"         # ← cambia con il tuo dataset HF
+
+  config: null                             # subset del dataset (es. "default")
+
+  # Formato del dataset — scegli uno tra:
+  #   messages       → colonna con [{role: "user", content: "..."}, ...]
+  #   prompt_response → due colonne separate (prompt + response)
+  #   text           → colonna con testo già formattato con il template
+  format: "messages"
+
+  # Nomi colonne (modifica solo se le tue colonne si chiamano diversamente)
+  messages_column: "messages"
+  prompt_column: "prompt"
+  response_column: "response"
+  text_column: "text"
+
+  train_split: "train"
+  test_split: null                         # null = crea split automatico da train
+  test_size: 0.05                          # % usata per test se test_split è null
+
+  max_samples: null                        # null = usa tutto
+                                           # intero (es. 100) = utile per debug rapido
+
+
+# ----------------------------------------------------------------
+# LORA
+# ----------------------------------------------------------------
+lora:
+  r: 32                                    # rank — 16 (leggero) / 32 (bilanciato) / 64 (massima qualità)
+  lora_alpha: 64                           # scaling — di solito 2× r
+  lora_dropout: 0.05
+  target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+  bias: "none"
+
+
+# ----------------------------------------------------------------
+# TRAINING
+# ----------------------------------------------------------------
+output_dir: "./output/venom-r1"
+
+num_train_epochs: 3
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 4            # batch effettivo = batch_size × grad_accum × num_gpu
+
+learning_rate: 2.0e-5
+lr_scheduler_type: "cosine"              # cosine | linear | constant
+warmup_ratio: 0.05
+
+max_seq_length: 8192                     # riduci a 4096 se OOM
+
+bf16: true
+gradient_checkpointing: true
+
+logging_steps: 10
+save_steps: 200
+eval_steps: 200
+eval_strategy: "steps"                   # no | steps | epoch
+save_total_limit: 3                      # checkpoint da tenere su disco
+
+seed: 42
+use_liger_kernel: false                  # true = ~20% più veloce (pip install liger-kernel)
+
+
+# ----------------------------------------------------------------
+# WEIGHTS & BIASES
+# ----------------------------------------------------------------
+wandb:
+  enabled: false
+  project: "venom-r1"
+  entity: null                           # null = account HF default
+  run_name: null                         # null = nome auto-generato

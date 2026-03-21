@@ -1,0 +1,14 @@
+# Accelerate config — Single GPU
+# Uso: accelerate launch --config_file accelerate_configs/single_gpu.yaml sft.py --config config.yaml
+
+compute_environment: LOCAL_MACHINE
+distributed_type: "NO"
+mixed_precision: "bf16"
+num_processes: 1
+num_machines: 1
+machine_rank: 0
+main_process_ip: null
+main_process_port: null
+main_training_function: main
+downcast_bf16: "no"
+use_cpu: false
